@@ -1,4 +1,4 @@
-package com.nalulabs.lib.mvp;
+package com.nalulabs.lib.recycle;
 
 /**
  * Created by jack on 10/04/17.

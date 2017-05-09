@@ -1,4 +1,4 @@
-package com.nalulabs.lib.mvp;
+package com.nalulabs.lib.recycle;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

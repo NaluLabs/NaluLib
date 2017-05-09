@@ -1,4 +1,4 @@
-package com.nalulabs.lib.mvp;
+package com.nalulabs.lib.recycle;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
