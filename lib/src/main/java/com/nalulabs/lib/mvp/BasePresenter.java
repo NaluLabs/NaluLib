@@ -6,17 +6,14 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 
 import com.nalulabs.lib.R;
+import com.nalulabs.lib.logs.LogUtils;
 
 import org.parceler.Parcels;
 
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 import java.util.List;
 
 import io.reactivex.exceptions.CompositeException;
 import it.codingjam.lifecyclebinder.DefaultLifeCycleAware;
-import retrofit2.adapter.rxjava2.HttpException;
 import timber.log.Timber;
 
 /**
@@ -60,7 +57,7 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
 
     private boolean isExceptionToBeLogged(Throwable t)
     {
-        if (t instanceof ManagedException || isConnectionError(t))
+        if (t instanceof ManagedException || LogUtils.isConnectionError(t))
         {
             return false;
         }
@@ -69,16 +66,6 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
             return existsExceptionToBeLogged(((CompositeException) t).getExceptions());
         }
         return true;
-    }
-
-    private boolean isConnectionError(Throwable t)
-    {
-        if (t instanceof UnknownHostException || t instanceof SocketException || t instanceof SocketTimeoutException
-                || t instanceof HttpException)
-        {
-            return true;
-        }
-        return false;
     }
 
     private boolean existsExceptionToBeLogged(List<Throwable> exceptions)

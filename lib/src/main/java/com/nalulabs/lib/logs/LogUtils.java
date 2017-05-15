@@ -1,9 +1,12 @@
 package com.nalulabs.lib.logs;
 
-import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
+import retrofit2.adapter.rxjava2.HttpException;
 import timber.log.Timber;
 
 /**
@@ -29,7 +32,7 @@ public class LogUtils
         RxJavaPlugins.setErrorHandler(e -> {
             if (e instanceof UndeliverableException) {
                 e = e.getCause();
-                if (e instanceof IOException) {
+                if (isConnectionError(e)) {
                     // fine, irrelevant network problem or API that throws on cancellation
                     return;
                 }
@@ -41,5 +44,15 @@ public class LogUtils
             Thread.currentThread().getUncaughtExceptionHandler()
                     .uncaughtException(Thread.currentThread(), e);
         });
+    }
+
+    public static boolean isConnectionError(Throwable t)
+    {
+        if (t instanceof UnknownHostException || t instanceof SocketException || t instanceof SocketTimeoutException
+                || t instanceof HttpException)
+        {
+            return true;
+        }
+        return false;
     }
 }
