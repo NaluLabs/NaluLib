@@ -25,7 +25,7 @@ public class LogUtils
             Thread.setDefaultUncaughtExceptionHandler((paramThread, paramThrowable) ->
             {
                 Timber.e(paramThrowable);
-                System.exit(2); //Prevents the service/app from freezing
+//                System.exit(2); //Prevents the service/app from freezing
             });
         }
 
