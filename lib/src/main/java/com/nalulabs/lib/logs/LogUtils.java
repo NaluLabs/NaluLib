@@ -21,13 +21,13 @@ public class LogUtils
                 ? new Timber.DebugTree()
                 : new CrashReportingTree());
 
-        if (debug) {
-            Thread.setDefaultUncaughtExceptionHandler((paramThread, paramThrowable) ->
-            {
-                Timber.e(paramThrowable);
+//        if (debug) {
+//            Thread.setDefaultUncaughtExceptionHandler((paramThread, paramThrowable) ->
+//            {
+//                Timber.e(paramThrowable);
 //                System.exit(2); //Prevents the service/app from freezing
-            });
-        }
+//            });
+//        }
 
         RxJavaPlugins.setErrorHandler(e -> {
             if (e instanceof UndeliverableException) {
