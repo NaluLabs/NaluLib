@@ -51,4 +51,13 @@ dependencies {
     compile 'org.parceler:parceler-api:1.1.6'
     annotationProcessor 'org.parceler:parceler:1.1.6'
     compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile ('com.nytimes.android:store2:0.0.1-SNAPSHOT') {
+        exclude group: 'com.google.code.findbugs'
+    }
+    compile ('com.nytimes.android:filesystem2:0.0.1-SNAPSHOT') {
+        exclude group: 'com.google.code.findbugs'
+    }
+    compile ('com.nytimes.android:middleware2:0.0.1-SNAPSHOT') {
+        exclude group: 'com.google.code.findbugs'
+    }
 }
