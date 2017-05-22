@@ -62,7 +62,7 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
                 Point size = new Point();
                 display.getSize(size);
                 int displayHeight = size.y;
-                int displayWidth = size.x;
+                int displayWidth = size.x / list.size();
 
                 binding.getRoot().setLayoutParams(new RecyclerView.LayoutParams(
                         width > 0 ?
