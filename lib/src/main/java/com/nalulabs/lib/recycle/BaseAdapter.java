@@ -1,10 +1,15 @@
 package com.nalulabs.lib.recycle;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 
 import java.util.List;
 
@@ -22,10 +27,14 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
     private int layoutId;
     private ViewHolderFactory<BaseViewHolder<T1>, T2> factory;
 
-    /**FIT OPTIONS*/
+    /**
+     * FIT OPTIONS
+     */
     private boolean fitHorizontal = false;
 
-    /**HEADER OPTIONS*/
+    /**
+     * HEADER OPTIONS
+     */
     private boolean showHeader = false;
     private int headerPosition = -1;
     private BaseHeader header;
@@ -39,28 +48,43 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == ITEM) {
+        if (viewType == ITEM) {
             T2 binding = DataBindingUtil.inflate(inflater, layoutId, parent, false);
             if (fitHorizontal) {
+
+                /** PARENT SIZE **/
                 int height = parent.getMeasuredHeight();
                 int width = parent.getMeasuredWidth() / list.size();
 
-                binding.getRoot().setLayoutParams(new RecyclerView.LayoutParams(width, height));
+                /** DISPLAY SIZE **/
+                WindowManager wm = (WindowManager) parent.getContext().getSystemService(Context.WINDOW_SERVICE);
+                Display display = wm.getDefaultDisplay();
+                Point size = new Point();
+                display.getSize(size);
+                int displayHeight = size.y;
+                int displayWidth = size.x;
+
+                binding.getRoot().setLayoutParams(new RecyclerView.LayoutParams(
+                        width > 0 ?
+                                width :
+                                displayWidth,
+                        height > 0 ?
+                                height :
+                                displayHeight));
             }
             return factory.newInstance(binding);
-        }else {
+        } else {
             return header.getHeader(parent);
         }
     }
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        if(showHeader){
-            if(headerPosition == position)
-            {
+        if (showHeader) {
+            if (headerPosition == position) {
                 holder.position = position;
                 holder.bind(header.binding);
-            }else{
+            } else {
 
                 int index = position < headerPosition ?
                         position :
@@ -70,7 +94,7 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
                 holder.bind(list.get(index));
             }
 
-        }else {
+        } else {
             holder.position = position;
             holder.bind(list.get(position));
         }
@@ -87,11 +111,11 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
         return showHeader ? (list.size() + 1) : list.size();
     }
 
-    public void fitHorizontal(){
+    public void fitHorizontal() {
         fitHorizontal = true;
     }
 
-    public void setHeader(int position, BaseHeader header){
+    public void setHeader(int position, BaseHeader header) {
         this.showHeader = true;
         this.headerPosition = position;
         this.header = header;

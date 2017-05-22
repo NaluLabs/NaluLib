@@ -1,5 +1,6 @@
 package com.nalulabs.lib.recycle;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,7 +9,7 @@ import android.view.View;
  * Created by jack on 09/05/17.
  */
 
-public class BaseItemDecorator extends RecyclerView.ItemDecoration{
+public class BaseItemDecorator extends RecyclerView.ItemDecoration {
 
     private int firstTopMargin;
     private int lastBottomMargin;
@@ -19,9 +20,11 @@ public class BaseItemDecorator extends RecyclerView.ItemDecoration{
 
     private int size;
     private boolean withHeader;
+    private Context context;
 
-    public BaseItemDecorator(int size, boolean withHeader) {
+    public BaseItemDecorator(Context context, int size, boolean withHeader) {
 
+        this.context = context;
         this.withHeader = withHeader;
         this.size = withHeader ?
                 size + 1 :
@@ -39,18 +42,40 @@ public class BaseItemDecorator extends RecyclerView.ItemDecoration{
             int firstTopMargin,
             int lastBottomMargin,
             int topMargin,
-            int bottomMargin){
+            int bottomMargin) {
         this.firstTopMargin = firstTopMargin;
         this.lastBottomMargin = lastBottomMargin;
         this.topMargin = topMargin;
         this.bottomMargin = bottomMargin;
     }
 
+    public void setVerticalSpacesDp(
+            int firstTopMargin,
+            int lastBottomMargin,
+            int topMargin,
+            int bottomMargin) {
+        setVerticalSpaces(
+                dpTopixel(firstTopMargin),
+                dpTopixel(lastBottomMargin),
+                dpTopixel(topMargin),
+                dpTopixel(bottomMargin)
+        );
+    }
+
     public void setHorizontalSpaces(
             int leftMargin,
-            int rightMargin){
+            int rightMargin) {
         this.leftMargin = leftMargin;
         this.rightMargin = rightMargin;
+    }
+
+    public void setHorizontalSpacesDp(
+            int leftMargin,
+            int rightMargin) {
+        setHorizontalSpaces(
+                dpTopixel(leftMargin),
+                dpTopixel(rightMargin)
+        );
     }
 
     @Override
@@ -60,15 +85,21 @@ public class BaseItemDecorator extends RecyclerView.ItemDecoration{
         if (parent.getChildAdapterPosition(view) == 0) {
             outRect.top = firstTopMargin;
             outRect.bottom = bottomMargin;
-        }else if(parent.getChildAdapterPosition(view) == size -1){
+        } else if (parent.getChildAdapterPosition(view) == size - 1) {
             outRect.top = topMargin;
             outRect.bottom = lastBottomMargin;
-        }else {
+        } else {
             outRect.top = topMargin;
             outRect.bottom = bottomMargin;
         }
 
         outRect.left = leftMargin;
         outRect.right = rightMargin;
+    }
+
+    public int dpTopixel(int dp) {
+        float density = context.getResources().getDisplayMetrics().density;
+        float pixel = dp * density;
+        return Math.round(pixel);
     }
 }
