@@ -4,7 +4,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 import retrofit2.adapter.rxjava2.HttpException;
 import timber.log.Timber;
@@ -29,21 +28,7 @@ public class LogUtils
 //            });
 //        }
 
-        RxJavaPlugins.setErrorHandler(e -> {
-            if (e instanceof UndeliverableException) {
-                e = e.getCause();
-                if (isConnectionError(e)) {
-                    // fine, irrelevant network problem or API that throws on cancellation
-                    return;
-                }
-                if (e instanceof InterruptedException) {
-                    // fine, some blocking code was interrupted by a dispose call
-                    return;
-                }
-            }
-            Thread.currentThread().getUncaughtExceptionHandler()
-                    .uncaughtException(Thread.currentThread(), e);
-        });
+        RxJavaPlugins.setErrorHandler(new LogErrorHandler());
     }
 
     public static boolean isConnectionError(Throwable t)
@@ -55,4 +40,5 @@ public class LogUtils
         }
         return false;
     }
+
 }
