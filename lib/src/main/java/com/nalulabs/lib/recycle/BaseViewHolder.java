@@ -10,7 +10,7 @@ import android.view.View;
 
 public abstract class BaseViewHolder<T1> extends RecyclerView.ViewHolder {
 
-    public ObservableInt position = new ObservableInt();
+    public ObservableInt viewHolderPosition = new ObservableInt();
 
     public BaseViewHolder(View itemView) {
         super(itemView);

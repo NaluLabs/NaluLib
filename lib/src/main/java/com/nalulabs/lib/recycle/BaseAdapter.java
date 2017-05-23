@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import java.util.List;
@@ -82,7 +81,7 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         if (showHeader) {
             if (headerPosition == position) {
-                holder.position.set(position);
+                holder.viewHolderPosition.set(position);
                 holder.bind(header.binding);
             } else {
 
@@ -90,12 +89,12 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
                         position :
                         position - 1;
 
-                holder.position.set(index);
+                holder.viewHolderPosition.set(index);
                 holder.bind(list.get(index));
             }
 
         } else {
-            holder.position.set(position);
+            holder.viewHolderPosition.set(position);
             holder.bind(list.get(position));
         }
 
