@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
 import java.util.List;
@@ -17,15 +16,15 @@ import java.util.List;
  * Created by jack on 10/04/17.
  */
 
-public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Adapter<BaseViewHolder> {
+public class BaseAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adapter<BaseViewHolder> {
 
     private static final int ITEM = 0;
     private static final int HEADER = 1;
 
-    private List<T1> list;
+    private List<T> list;
     private LayoutInflater inflater;
     private int layoutId;
-    private ViewHolderFactory<BaseViewHolder<T1>, T2> factory;
+    private ViewHolderFactory<T, B> factory;
 
     /**
      * FIT OPTIONS
@@ -39,7 +38,7 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
     private int headerPosition = -1;
     private BaseHeader header;
 
-    public BaseAdapter(List<T1> list, LayoutInflater inflater, int layoutId, ViewHolderFactory<BaseViewHolder<T1>, T2> factory) {
+    public BaseAdapter(List<T> list, LayoutInflater inflater, int layoutId, ViewHolderFactory<T, B> factory) {
         this.list = list;
         this.inflater = inflater;
         this.layoutId = layoutId;
@@ -49,7 +48,7 @@ public class BaseAdapter<T1, T2 extends ViewDataBinding> extends RecyclerView.Ad
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM) {
-            T2 binding = DataBindingUtil.inflate(inflater, layoutId, parent, false);
+            B binding = DataBindingUtil.inflate(inflater, layoutId, parent, false);
             if (fitHorizontal) {
 
                 /** PARENT SIZE **/
