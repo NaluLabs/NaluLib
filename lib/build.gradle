@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 
-apply plugin: 'me.tatarka.retrolambda'
-
 apply plugin: 'com.github.dcendents.android-maven'
 
 group='com.github.NaluLabs.NaluLib'
@@ -28,22 +26,18 @@ android {
     dataBinding {
         enabled = true
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
 
-    compile 'com.google.firebase:firebase-crash:10.2.4'
+    compile 'com.google.firebase:firebase-crash:10.2.6'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     annotationProcessor 'com.github.fabioCollini.lifecyclebinder:lifecyclebinder-processor:0.4beta1'

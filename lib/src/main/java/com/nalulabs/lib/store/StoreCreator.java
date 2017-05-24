@@ -9,6 +9,7 @@ import com.nytimes.android.external.fs2.FileSystemRecordPersister;
 import com.nytimes.android.external.fs2.PathResolver;
 import com.nytimes.android.external.fs2.filesystem.FileSystemFactory;
 import com.nytimes.android.external.store2.base.Fetcher;
+import com.nytimes.android.external.store2.base.Parser;
 import com.nytimes.android.external.store2.base.Persister;
 import com.nytimes.android.external.store2.base.impl.MemoryPolicy;
 import com.nytimes.android.external.store2.base.impl.RealStoreBuilder;
@@ -47,6 +48,8 @@ public class StoreCreator
                 .setExpireAfterTimeUnit(timeUnit)
                 .build();
 
+        Parser<BufferedSource, T> sourceParser = GsonParserFactory.createSourceParser(gson, type);
+
         RealStoreBuilder<BufferedSource, T, V> builder = StoreBuilder.<V, BufferedSource, T>
                 parsedWithKey()
                 .memoryPolicy(memoryPolicy)
@@ -60,7 +63,7 @@ public class StoreCreator
                         });
                     }
                 })
-                .parser(GsonParserFactory.createSourceParser(gson, type));
+                .parser(sourceParser);
 
         if (persister != null)
         {
