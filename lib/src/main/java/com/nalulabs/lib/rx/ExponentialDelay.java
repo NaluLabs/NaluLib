@@ -5,6 +5,7 @@ import org.reactivestreams.Publisher;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import timber.log.Timber;
 
@@ -31,23 +32,26 @@ public class ExponentialDelay implements Function<Flowable<? extends Throwable>,
         // ignoring it and doing your own thing will break the sequence
 
         return inputObservable.flatMap(
-                (Function<Throwable, Publisher<?>>) throwable -> {
-                    if (++retryCount < maxRetries) {
+                new Function<Throwable, Publisher<?>>() {
+                    @Override
+                    public Publisher<?> apply(@NonNull Throwable throwable) throws Exception {
+                        if (++retryCount < maxRetries) {
 
-                        // When this Observable calls onNext, the original
-                        // Observable will be retried (i.e. re-subscribed)
+                            // When this Observable calls onNext, the original
+                            // Observable will be retried (i.e. re-subscribed)
 
-                        long delay = (long) (Math.pow(2, retryCount - 1) * retryDelayMillis);
-                        Timber.d("Retrying in %d ms", delay);
+                            long delay = (long) (Math.pow(2, retryCount - 1) * retryDelayMillis);
+                            Timber.d("Retrying in %d ms", delay);
 
-                        return Flowable.timer(delay, TimeUnit.MILLISECONDS);
+                            return Flowable.timer(delay, TimeUnit.MILLISECONDS);
+                        }
+
+                        Timber.d("Argh! i give up");
+
+                        // Max retries hit. Pass an error so the chain is forcibly completed
+                        // only onNext triggers a re-subscription (onError + onComplete kills it)
+                        return Flowable.error(throwable);
                     }
-
-                    Timber.d("Argh! i give up");
-
-                    // Max retries hit. Pass an error so the chain is forcibly completed
-                    // only onNext triggers a re-subscription (onError + onComplete kills it)
-                    return Flowable.error(throwable);
                 });
     }
 }

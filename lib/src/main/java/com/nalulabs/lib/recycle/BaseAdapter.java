@@ -18,7 +18,13 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder<? extend
 
     private List<T> list;
     private final LayoutInflater inflater;
-    private List<Pair<ItemTypeSelector<T>, Factory<? extends T, ?>>> factories = new ArrayList<>();
+    private List<Pair<ItemTypeSelector<? super T>, Factory<? extends T, ?>>> factories = new ArrayList<>();
+
+    private static final ItemTypeSelector<Object> ALWAYS_SELECTOR = new ItemTypeSelector<Object>() {
+        @Override public boolean isOfType(int pos, Object item) {
+            return true;
+        }
+    };
 
     public BaseAdapter(List<T> list, LayoutInflater inflater, int layoutId, ViewHolderFactory<T, ?> defaultFactory) {
         this(list, inflater, new Factory<>(layoutId, defaultFactory));
@@ -27,12 +33,12 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder<? extend
     public BaseAdapter(List<T> list, LayoutInflater inflater, Factory<? extends T, ?> defaultFactory) {
         this.list = list;
         this.inflater = inflater;
-        factories.add(Pair.create((pos, item) -> true, defaultFactory));
+        factories.add(Pair.<ItemTypeSelector<? super T>, Factory<? extends T, ?>>create(ALWAYS_SELECTOR, defaultFactory));
     }
 
     @Override public int getItemViewType(int position) {
         for (int i = 0; i < factories.size(); i++) {
-            Pair<ItemTypeSelector<T>, Factory<? extends T, ?>> pair = factories.get(i);
+            Pair<ItemTypeSelector<? super T>, Factory<? extends T, ?>> pair = factories.get(i);
             if (pair.first.isOfType(position, list.get(position))) {
                 return i;
             }
@@ -57,8 +63,8 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder<? extend
         return list.size();
     }
 
-    public void addItemType(ItemTypeSelector<T> selector, Factory<? extends T, ?> factory) {
-        factories.add(factories.size() - 1, Pair.create(selector, factory));
+    public void addItemType(ItemTypeSelector<? super T> selector, Factory<? extends T, ?> factory) {
+        factories.add(factories.size() - 1, Pair.<ItemTypeSelector<? super T>, Factory<? extends T, ?>>create(selector, factory));
     }
 
     public interface ItemTypeSelector<T> {

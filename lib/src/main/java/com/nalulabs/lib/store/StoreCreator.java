@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 import okio.BufferedSource;
 
@@ -36,7 +38,7 @@ public class StoreCreator
     }
 
     @NonNull
-    public <T, V> Store<T, V> createStore(Fetcher<ResponseBody, V> fetcher, PathResolver<V> pathResolver, Type type, int expirationDuration, TimeUnit timeUnit)
+    public <T, V> Store<T, V> createStore(final Fetcher<ResponseBody, V> fetcher, PathResolver<V> pathResolver, Type type, int expirationDuration, TimeUnit timeUnit)
     {
         Persister<BufferedSource, V> persister = createPersister(application, pathResolver, expirationDuration, timeUnit);
 
@@ -48,7 +50,16 @@ public class StoreCreator
         RealStoreBuilder<BufferedSource, T, V> builder = StoreBuilder.<V, BufferedSource, T>
                 parsedWithKey()
                 .memoryPolicy(memoryPolicy)
-                .fetcher(s -> fetcher.fetch(s).map(ResponseBody::source))
+                .fetcher(new Fetcher<BufferedSource, V>() {
+                    @Override public Observable<BufferedSource> fetch(V s) {
+                        return fetcher.fetch(s).map(new Function<ResponseBody, BufferedSource>() {
+                            @Override
+                            public BufferedSource apply(@io.reactivex.annotations.NonNull ResponseBody responseBody) throws Exception {
+                                return responseBody.source();
+                            }
+                        });
+                    }
+                })
                 .parser(GsonParserFactory.createSourceParser(gson, type));
 
         if (persister != null)
