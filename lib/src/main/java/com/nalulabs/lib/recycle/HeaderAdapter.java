@@ -1,19 +1,18 @@
 package com.nalulabs.lib.recycle;
 
-import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-public class HeaderAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adapter<BaseViewHolder>
+public class HeaderAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
 {
     private static final int HEADER = 113344;
 
-    private BaseAdapter<T, B> delegate;
+    private BaseAdapter<T> delegate;
 
     private int headerPosition = -1;
     private BaseHeader header;
 
-    public HeaderAdapter(BaseAdapter<T, B> delegate, int position, BaseHeader header)
+    public HeaderAdapter(BaseAdapter<T> delegate, int position, BaseHeader header)
     {
         this.delegate = delegate;
         this.headerPosition = position;
@@ -41,12 +40,14 @@ public class HeaderAdapter<T, B extends ViewDataBinding> extends RecyclerView.Ad
             holder.bind(header.binding);
         } else
         {
-            int index = position < headerPosition ?
-                    position :
-                    position - 1;
-
-            delegate.onBindViewHolder(holder, index);
+            delegate.onBindViewHolder(holder, getDelegatePosition(position));
         }
+    }
+
+    private int getDelegatePosition(int position) {
+        return position < headerPosition ?
+                        position :
+                        position - 1;
     }
 
     @Override
@@ -58,6 +59,6 @@ public class HeaderAdapter<T, B extends ViewDataBinding> extends RecyclerView.Ad
     @Override
     public int getItemViewType(int position)
     {
-        return (position == headerPosition) ? HEADER : delegate.getItemViewType(position);
+        return (position == headerPosition) ? HEADER : delegate.getItemViewType(getDelegatePosition(position));
     }
 }

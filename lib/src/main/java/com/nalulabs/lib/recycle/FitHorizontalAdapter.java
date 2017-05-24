@@ -1,18 +1,17 @@
 package com.nalulabs.lib.recycle;
 
 import android.content.Context;
-import android.databinding.ViewDataBinding;
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-public class FitHorizontalAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adapter<BaseViewHolder<T>>
+public class FitHorizontalAdapter<T> extends RecyclerView.Adapter<BaseViewHolder<T>>
 {
-    private BaseAdapter<T, B> delegate;
+    private BaseAdapter<T> delegate;
 
-    public FitHorizontalAdapter(BaseAdapter<T, B> delegate)
+    public FitHorizontalAdapter(BaseAdapter<T> delegate)
     {
         this.delegate = delegate;
     }

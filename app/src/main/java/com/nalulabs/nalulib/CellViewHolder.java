@@ -9,9 +9,9 @@ import com.nalulabs.nalulib.databinding.CellBinding;
  * Created by fabiocollini on 24/05/17.
  */
 
-public class CellViewHolder extends BaseViewHolder<Item> {
+public class CellViewHolder extends BaseViewHolder<Item1> {
 
-    public final ObservableField<Item> item = new ObservableField<>();
+    public final ObservableField<Item1> item = new ObservableField<>();
     private CellBinding binding;
 
     public CellViewHolder(CellBinding binding) {
@@ -20,7 +20,7 @@ public class CellViewHolder extends BaseViewHolder<Item> {
         binding.setViewHolder(this);
     }
 
-    @Override public void bind(Item data) {
+    @Override public void bind(Item1 data) {
         item.set(data);
         binding.executePendingBindings();
     }
