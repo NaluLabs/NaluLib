@@ -1,5 +1,6 @@
 package com.nalulabs.lib.recycle;
 
+import android.databinding.ObservableInt;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -9,7 +10,7 @@ import android.view.View;
 
 public abstract class BaseViewHolder<T1> extends RecyclerView.ViewHolder {
 
-    public int position;
+    public ObservableInt viewHolderPosition = new ObservableInt();
 
     public BaseViewHolder(View itemView) {
         super(itemView);

@@ -81,7 +81,7 @@ public class BaseAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adap
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         if (showHeader) {
             if (headerPosition == position) {
-                holder.position = position;
+                holder.viewHolderPosition.set(position);
                 holder.bind(header.binding);
             } else {
 
@@ -89,12 +89,12 @@ public class BaseAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adap
                         position :
                         position - 1;
 
-                holder.position = index;
+                holder.viewHolderPosition.set(index);
                 holder.bind(list.get(index));
             }
 
         } else {
-            holder.position = position;
+            holder.viewHolderPosition.set(position);
             holder.bind(list.get(position));
         }
 
