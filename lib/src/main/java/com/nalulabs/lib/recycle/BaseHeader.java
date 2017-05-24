@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 public class BaseHeader<T1, T2 extends ViewDataBinding> {
 
     public int layoutId;
-    public ViewHolderFactory<BaseViewHolder<T1>, T2> factory;
+    public ViewHolderFactory<T1, T2> factory;
     public T1 binding;
 
     private LayoutInflater inflater;
 
-    public BaseHeader(T1 binding, int layoutId, ViewHolderFactory<BaseViewHolder<T1>, T2> factory, LayoutInflater inflater) {
+    public BaseHeader(T1 binding, int layoutId, ViewHolderFactory<T1, T2> factory, LayoutInflater inflater) {
         this.layoutId = layoutId;
         this.factory = factory;
         this.inflater = inflater;
