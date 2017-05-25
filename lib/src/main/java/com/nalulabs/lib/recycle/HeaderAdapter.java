@@ -3,16 +3,16 @@ package com.nalulabs.lib.recycle;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-public class HeaderAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
+public class HeaderAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private static final int HEADER = 113344;
 
-    private BaseAdapter<T> delegate;
+    private RecyclerView.Adapter delegate;
 
     private int headerPosition = -1;
     private BaseHeader header;
 
-    public HeaderAdapter(BaseAdapter<T> delegate, int position, BaseHeader header)
+    public HeaderAdapter(RecyclerView.Adapter delegate, int position, BaseHeader header)
     {
         this.delegate = delegate;
         this.headerPosition = position;
@@ -20,7 +20,7 @@ public class HeaderAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         if (viewType == HEADER)
         {
@@ -32,12 +32,12 @@ public class HeaderAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
         if (headerPosition == position)
         {
-            holder.viewHolderPosition.set(position);
-            holder.bind(header.binding);
+            ((BaseViewHolder) holder).viewHolderPosition.set(position);
+            ((BaseViewHolder) holder).bind(header.binding);
         } else
         {
             delegate.onBindViewHolder(holder, getDelegatePosition(position));
