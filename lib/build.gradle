@@ -42,8 +42,8 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     annotationProcessor 'com.github.fabioCollini.lifecyclebinder:lifecyclebinder-processor:0.4beta1'
     compile 'com.github.fabioCollini.lifecyclebinder:lifecyclebinder-lib:0.4beta1'
-    compile 'org.parceler:parceler-api:1.1.6'
-    annotationProcessor 'org.parceler:parceler:1.1.6'
+    compile 'org.parceler:parceler-api:1.1.8'
+    annotationProcessor 'org.parceler:parceler:1.1.8'
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile ('com.nytimes.android:store2:0.0.1-SNAPSHOT') {
         exclude group: 'com.google.code.findbugs'
