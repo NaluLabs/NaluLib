@@ -5,24 +5,30 @@ import android.view.ViewGroup;
 
 public class HeaderAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-    private static final int HEADER = 113344;
 
     private RecyclerView.Adapter delegate;
 
+    private int headerViewType;
     private int headerPosition = -1;
     private BaseHeader header;
 
-    public HeaderAdapter(RecyclerView.Adapter delegate, int position, BaseHeader header)
+    public HeaderAdapter(RecyclerView.Adapter delegate, int headerViewType, int position, BaseHeader header)
     {
         this.delegate = delegate;
+        this.headerViewType = headerViewType;
         this.headerPosition = position;
         this.header = header;
+    }
+
+    public HeaderAdapter(RecyclerView.Adapter delegate, int position, BaseHeader header)
+    {
+        this(delegate, 113344, position, header);
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        if (viewType == HEADER)
+        if (viewType == headerViewType)
         {
             return header.getHeader(parent);
         } else
@@ -59,6 +65,6 @@ public class HeaderAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemViewType(int position)
     {
-        return (position == headerPosition) ? HEADER : delegate.getItemViewType(getDelegatePosition(position));
+        return (position == headerPosition) ? headerViewType : delegate.getItemViewType(getDelegatePosition(position));
     }
 }
