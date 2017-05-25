@@ -67,6 +67,12 @@ public class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder<? extend
         factories.add(factories.size() - 1, Pair.<ItemTypeSelector<? super T>, Factory<? extends T, ?>>create(selector, factory));
     }
 
+    public void replaceItems(List<T> newItems)
+    {
+        this.list = newItems;
+        notifyDataSetChanged();
+    }
+
     public interface ItemTypeSelector<T> {
         boolean isOfType(int position, T item);
     }
