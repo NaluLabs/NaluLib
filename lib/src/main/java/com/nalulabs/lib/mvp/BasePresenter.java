@@ -89,6 +89,9 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
             if (errorMessageRes > 0)
             {
                 return getString(errorMessageRes);
+            }else if(managedException.getErrorMessage() != null &&
+                    !managedException.getErrorMessage().isEmpty()){
+                return managedException.getErrorMessage();
             }
         }
         return getString(R.string.connection_error_message);
