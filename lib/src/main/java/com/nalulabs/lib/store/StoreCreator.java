@@ -9,6 +9,7 @@ import com.nytimes.android.external.fs2.FileSystemRecordPersister;
 import com.nytimes.android.external.fs2.PathResolver;
 import com.nytimes.android.external.fs2.filesystem.FileSystemFactory;
 import com.nytimes.android.external.store2.base.Fetcher;
+import com.nytimes.android.external.store2.base.Parser;
 import com.nytimes.android.external.store2.base.Persister;
 import com.nytimes.android.external.store2.base.impl.MemoryPolicy;
 import com.nytimes.android.external.store2.base.impl.RealStoreBuilder;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 import okhttp3.ResponseBody;
 import okio.BufferedSource;
 
@@ -36,7 +39,7 @@ public class StoreCreator
     }
 
     @NonNull
-    public <T, V> Store<T, V> createStore(Fetcher<ResponseBody, V> fetcher, PathResolver<V> pathResolver, Type type, int expirationDuration, TimeUnit timeUnit)
+    public <T, V> Store<T, V> createStore(final Fetcher<ResponseBody, V> fetcher, PathResolver<V> pathResolver, Type type, int expirationDuration, TimeUnit timeUnit)
     {
         Persister<BufferedSource, V> persister = createPersister(application, pathResolver, expirationDuration, timeUnit);
 
@@ -45,11 +48,22 @@ public class StoreCreator
                 .setExpireAfterTimeUnit(timeUnit)
                 .build();
 
+        Parser<BufferedSource, T> sourceParser = GsonParserFactory.createSourceParser(gson, type);
+
         RealStoreBuilder<BufferedSource, T, V> builder = StoreBuilder.<V, BufferedSource, T>
                 parsedWithKey()
                 .memoryPolicy(memoryPolicy)
-                .fetcher(s -> fetcher.fetch(s).map(ResponseBody::source))
-                .parser(GsonParserFactory.createSourceParser(gson, type));
+                .fetcher(new Fetcher<BufferedSource, V>() {
+                    @Override public Observable<BufferedSource> fetch(V s) {
+                        return fetcher.fetch(s).map(new Function<ResponseBody, BufferedSource>() {
+                            @Override
+                            public BufferedSource apply(@io.reactivex.annotations.NonNull ResponseBody responseBody) throws Exception {
+                                return responseBody.source();
+                            }
+                        });
+                    }
+                })
+                .parser(sourceParser);
 
         if (persister != null)
         {

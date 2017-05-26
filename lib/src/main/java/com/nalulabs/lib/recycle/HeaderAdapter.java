@@ -3,26 +3,32 @@ package com.nalulabs.lib.recycle;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-public class HeaderAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
+public class HeaderAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
-    private static final int HEADER = 113344;
 
-    private BaseAdapter<T> delegate;
+    private RecyclerView.Adapter delegate;
 
+    private int headerViewType;
     private int headerPosition = -1;
     private BaseHeader header;
 
-    public HeaderAdapter(BaseAdapter<T> delegate, int position, BaseHeader header)
+    public HeaderAdapter(RecyclerView.Adapter delegate, int headerViewType, int position, BaseHeader header)
     {
         this.delegate = delegate;
+        this.headerViewType = headerViewType;
         this.headerPosition = position;
         this.header = header;
     }
 
-    @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public HeaderAdapter(RecyclerView.Adapter delegate, int position, BaseHeader header)
     {
-        if (viewType == HEADER)
+        this(delegate, 113344, position, header);
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        if (viewType == headerViewType)
         {
             return header.getHeader(parent);
         } else
@@ -32,12 +38,12 @@ public class HeaderAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position)
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
         if (headerPosition == position)
         {
-            holder.viewHolderPosition.set(position);
-            holder.bind(header.binding);
+            ((BaseViewHolder) holder).viewHolderPosition.set(position);
+            ((BaseViewHolder) holder).bind(header.binding);
         } else
         {
             delegate.onBindViewHolder(holder, getDelegatePosition(position));
@@ -59,6 +65,6 @@ public class HeaderAdapter<T> extends RecyclerView.Adapter<BaseViewHolder>
     @Override
     public int getItemViewType(int position)
     {
-        return (position == headerPosition) ? HEADER : delegate.getItemViewType(getDelegatePosition(position));
+        return (position == headerPosition) ? headerViewType : delegate.getItemViewType(getDelegatePosition(position));
     }
 }
