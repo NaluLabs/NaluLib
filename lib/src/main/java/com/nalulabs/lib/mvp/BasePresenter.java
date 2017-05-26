@@ -20,148 +20,118 @@ import timber.log.Timber;
  * Created by fabio on 27/03/17.
  */
 
-public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeCycleAware<V>
-{
+public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeCycleAware<V> {
     private static final String MODEL = "model";
     protected M model;
 
     public final ObservableBoolean loading = new ObservableBoolean();
 
-    public M getModel()
-    {
+    public M getModel() {
         return model;
     }
 
-    public void setModel(M model)
-    {
+    public void setModel(M model) {
         this.model = model;
     }
 
-    public ObservableBoolean getError()
-    {
+    public ObservableBoolean getError() {
         return model.error;
     }
 
-    public void showError(Throwable t)
-    {
+    public void showError(Throwable t) {
         loading.set(false);
         model.error.set(true);
         model.lastError = t.getClass();
         model.errorMessage.set(getErrorMessage(t));
         model.retryButtonMessage.set(getRetryButtonMessage(t));
-        if (isExceptionToBeLogged(t))
-        {
+        if (isExceptionToBeLogged(t)) {
             Timber.e(t);
         }
     }
 
-    private boolean isExceptionToBeLogged(Throwable t)
-    {
-        if (t instanceof ManagedException || LogUtils.isConnectionError(t))
-        {
+    private boolean isExceptionToBeLogged(Throwable t) {
+        if (t instanceof ManagedException || LogUtils.isConnectionError(t)) {
             return false;
         }
-        if (t instanceof CompositeException)
-        {
+        if (t instanceof CompositeException) {
             return existsExceptionToBeLogged(((CompositeException) t).getExceptions());
         }
         return true;
     }
 
-    private boolean existsExceptionToBeLogged(List<Throwable> exceptions)
-    {
-        for (Throwable t : exceptions)
-        {
-            if (isExceptionToBeLogged(t))
-            {
+    private boolean existsExceptionToBeLogged(List<Throwable> exceptions) {
+        for (Throwable t : exceptions) {
+            if (isExceptionToBeLogged(t)) {
                 return true;
             }
         }
         return false;
     }
 
-    protected String getErrorMessage(Throwable t)
-    {
-        if (t instanceof ManagedException)
-        {
+    protected String getErrorMessage(Throwable t) {
+        if (t instanceof ManagedException) {
             ManagedException managedException = (ManagedException) t;
             int errorMessageRes = managedException.getErrorMessageRes();
-            if (errorMessageRes > 0)
-            {
+            if (errorMessageRes > 0) {
                 return getString(errorMessageRes);
-            }else if(managedException.getErrorMessage() != null &&
-                    !managedException.getErrorMessage().isEmpty()){
+            } else if (managedException.getErrorMessage() != null &&
+                    !managedException.getErrorMessage().isEmpty()) {
                 return managedException.getErrorMessage();
             }
         }
         return getString(R.string.connection_error_message);
     }
 
-    protected String getRetryButtonMessage(Throwable t)
-    {
-        if (t instanceof ManagedException)
-        {
+    protected String getRetryButtonMessage(Throwable t) {
+        if (t instanceof ManagedException) {
             ManagedException managedException = (ManagedException) t;
             int res = managedException.getRetryButtonText();
-            if (res > 0)
-            {
+            if (res > 0) {
                 return getString(res);
             }
         }
         return getString(R.string.retry);
     }
 
-    public ObservableField<String> getRetryButtonMessage()
-    {
+    public ObservableField<String> getRetryButtonMessage() {
         return model.retryButtonMessage;
     }
 
-    public ObservableField<String> getErrorMessage()
-    {
+    public ObservableField<String> getErrorMessage() {
         return model.errorMessage;
     }
 
     protected abstract String getString(int res);
 
-    public void showLoading()
-    {
+    public void showLoading() {
         loading.set(true);
     }
 
-    public void hideLoading()
-    {
+    public void hideLoading() {
         loading.set(false);
     }
 
-    public final void retryFromUi()
-    {
+    public final void retryFromUi() {
         model.error.set(false);
-        showLoading();
         retry(model.lastError);
     }
 
-    public void retry(Class<? extends Throwable> lastError)
-    {
+    public void retry(Class<? extends Throwable> lastError) {
     }
 
     @Override
-    public void onCreate(V view, Bundle savedInstanceState, Intent intent, Bundle arguments)
-    {
-        if (model == null)
-        {
-            if (savedInstanceState == null)
-            {
+    public void onCreate(V view, Bundle savedInstanceState, Intent intent, Bundle arguments) {
+        if (model == null) {
+            if (savedInstanceState == null) {
                 model = createModel(arguments);
-            } else
-            {
+            } else {
                 model = Parcels.unwrap(savedInstanceState.getParcelable(MODEL));
             }
         }
     }
 
     @Override
-    public void onSaveInstanceState(V view, Bundle bundle)
-    {
+    public void onSaveInstanceState(V view, Bundle bundle) {
         bundle.putParcelable(MODEL, Parcels.wrap(model));
     }
 
