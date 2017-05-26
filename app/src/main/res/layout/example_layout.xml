@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="presenter"
+            type="com.nalulabs.nalulib.example.ExamplePresenter"/>
+    </data>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_purple">
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="CONFIRM POUP"
+        android:layout_gravity="center"
+        android:onClick="@{() -> presenter.onConfirmClick()}"/>
+
+    <Button
+        android:id="@+id/error"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="ERROR POUP"
+        android:layout_gravity="center"
+        android:onClick="@{() -> presenter.onErrorClick()}"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
+</layout>

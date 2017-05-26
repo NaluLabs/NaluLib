@@ -1,4 +1,4 @@
-package com.nalulabs.nalulib;
+package com.nalulabs.nalulib.example;
 
 import com.nalulabs.lib.recycle.BaseViewHolder;
 import com.nalulabs.nalulib.databinding.HeaderBinding;
@@ -13,7 +13,8 @@ public class HeaderViewHolder extends BaseViewHolder<Integer> {
         super(binding.getRoot());
     }
 
-    @Override public void bind(Integer data) {
+    @Override
+    public void bind(Integer data) {
 
     }
 }

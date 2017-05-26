@@ -1,4 +1,4 @@
-package com.nalulabs.nalulib;
+package com.nalulabs.nalulib.example;
 
 import android.databinding.ObservableField;
 

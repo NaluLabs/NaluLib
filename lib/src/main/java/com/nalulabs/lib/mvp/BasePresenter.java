@@ -3,6 +3,7 @@ package com.nalulabs.lib.mvp;
 import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.os.Bundle;
 
 import com.nalulabs.lib.R;
@@ -32,6 +33,30 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
 
     public void setModel(M model) {
         this.model = model;
+    }
+
+    public ObservableBoolean getConfirm() {
+        return model.confirm;
+    }
+
+    public ObservableInt getConfirmRequestCode() {
+        return model.confirmRequestCode;
+    }
+
+    public void showConfirm(int messageRes, int buttonRes) {
+        loading.set(false);
+        model.confirm.set(true);
+        model.confirmMessage.set(getString(messageRes));
+        model.confirmRequestCode.set(0);
+        model.confirmButtonMessage.set(getString(buttonRes));
+    }
+
+    public void showConfirm(int messageRes, int buttonRes, int requestCode) {
+        loading.set(false);
+        model.confirm.set(true);
+        model.confirmMessage.set(getString(messageRes));
+        model.confirmRequestCode.set(requestCode);
+        model.confirmButtonMessage.set(getString(buttonRes));
     }
 
     public ObservableBoolean getError() {
@@ -101,6 +126,14 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
         return model.errorMessage;
     }
 
+    public ObservableField<String> getConfirmButtonMessage() {
+        return model.confirmButtonMessage;
+    }
+
+    public ObservableField<String> getConfirmMessage() {
+        return model.confirmMessage;
+    }
+
     protected abstract String getString(int res);
 
     public void showLoading() {
@@ -117,6 +150,15 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
     }
 
     public void retry(Class<? extends Throwable> lastError) {
+    }
+
+    public void confirmFromUi() {
+        model.confirm.set(false);
+        confirm(model.confirmRequestCode.get());
+    }
+
+    public void confirm(int requestId) {
+
     }
 
     @Override

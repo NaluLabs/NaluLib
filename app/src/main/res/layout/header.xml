@@ -5,7 +5,7 @@
 
         <variable
             name="viewHolder"
-            type="com.nalulabs.nalulib.CellViewHolder"/>
+            type="com.nalulabs.nalulib.example.CellViewHolder"/>
     </data>
 
     <LinearLayout

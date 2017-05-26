@@ -9,48 +9,51 @@ import android.widget.FrameLayout;
  * Created by fabiocollini on 11/04/17.
  */
 
-public class ErrorLoadingWrapper
-{
+public class ErrorLoadingWrapper {
 
     private Observable.OnPropertyChangedCallback loadingCallback;
     private Observable.OnPropertyChangedCallback errorCallback;
+    private Observable.OnPropertyChangedCallback confirmCallback;
     private BasePresenter presenter;
 
 
-    public View wrapLayout(final BasePresenter presenter, final View root, ViewGroup wrapperRoot)
-    {
+    public View wrapLayout(final BasePresenter presenter, final View root, ViewGroup wrapperRoot) {
         this.presenter = presenter;
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         wrapperRoot.addView(root, params);
 
-        loadingCallback = new Observable.OnPropertyChangedCallback()
-        {
+        loadingCallback = new Observable.OnPropertyChangedCallback() {
             @Override
-            public void onPropertyChanged(Observable observable, int i)
-            {
+            public void onPropertyChanged(Observable observable, int i) {
                 root.setVisibility(presenter.loading.get() ? View.GONE : View.VISIBLE);
             }
         };
         presenter.loading.addOnPropertyChangedCallback(loadingCallback);
 
-        errorCallback = new Observable.OnPropertyChangedCallback()
-        {
+        errorCallback = new Observable.OnPropertyChangedCallback() {
             @Override
-            public void onPropertyChanged(Observable observable, int i)
-            {
+            public void onPropertyChanged(Observable observable, int i) {
                 root.setVisibility(presenter.getError().get() ? View.GONE : View.VISIBLE);
             }
         };
         presenter.getError().addOnPropertyChangedCallback(errorCallback);
 
-        root.setVisibility(presenter.loading.get() || presenter.getError().get() ? View.GONE : View.VISIBLE);
+        confirmCallback = new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                root.setVisibility(presenter.getConfirm().get() ? View.GONE : View.VISIBLE);
+            }
+        };
+        presenter.getConfirm().addOnPropertyChangedCallback(confirmCallback);
+
+        root.setVisibility(presenter.loading.get() || presenter.getError().get() || presenter.getConfirm().get() ? View.GONE : View.VISIBLE);
 
         return wrapperRoot;
     }
 
-    public void removeCallbacks()
-    {
+    public void removeCallbacks() {
         presenter.loading.removeOnPropertyChangedCallback(loadingCallback);
         presenter.getError().removeOnPropertyChangedCallback(errorCallback);
+        presenter.getConfirm().removeOnPropertyChangedCallback(confirmCallback);
     }
 }
