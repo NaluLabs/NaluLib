@@ -11,9 +11,6 @@ import com.nalulabs.lib.logs.LogUtils;
 
 import org.parceler.Parcels;
 
-import java.util.List;
-
-import io.reactivex.exceptions.CompositeException;
 import it.codingjam.lifecyclebinder.DefaultLifeCycleAware;
 import timber.log.Timber;
 
@@ -69,28 +66,9 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
         model.lastError = t.getClass();
         model.errorMessage.set(getErrorMessage(t));
         model.retryButtonMessage.set(getRetryButtonMessage(t));
-        if (isExceptionToBeLogged(t)) {
+        if (LogUtils.isExceptionToBeLogged(t)) {
             Timber.e(t);
         }
-    }
-
-    private boolean isExceptionToBeLogged(Throwable t) {
-        if (t instanceof ManagedException || LogUtils.isConnectionError(t)) {
-            return false;
-        }
-        if (t instanceof CompositeException) {
-            return existsExceptionToBeLogged(((CompositeException) t).getExceptions());
-        }
-        return true;
-    }
-
-    private boolean existsExceptionToBeLogged(List<Throwable> exceptions) {
-        for (Throwable t : exceptions) {
-            if (isExceptionToBeLogged(t)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     protected String getErrorMessage(Throwable t) {

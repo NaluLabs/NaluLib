@@ -1,9 +1,13 @@
 package com.nalulabs.lib.logs;
 
+import com.nalulabs.lib.mvp.ManagedException;
+
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+import java.util.List;
 
+import io.reactivex.exceptions.CompositeException;
 import io.reactivex.plugins.RxJavaPlugins;
 import retrofit2.adapter.rxjava2.HttpException;
 import timber.log.Timber;
@@ -41,4 +45,22 @@ public class LogUtils
         return false;
     }
 
+    public static boolean isExceptionToBeLogged(Throwable t) {
+        if (t instanceof ManagedException || isConnectionError(t)) {
+            return false;
+        }
+        if (t instanceof CompositeException) {
+            return existsExceptionToBeLogged(((CompositeException) t).getExceptions());
+        }
+        return true;
+    }
+
+    private static boolean existsExceptionToBeLogged(List<Throwable> exceptions) {
+        for (Throwable t : exceptions) {
+            if (isExceptionToBeLogged(t)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
