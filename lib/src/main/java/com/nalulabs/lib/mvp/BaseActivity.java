@@ -18,7 +18,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity extends AppCompatActivity
 {
 
-    private ErrorLoadingWrapper errorLoadingWrapper;
+    protected ErrorLoadingWrapper errorLoadingWrapper;
 
     protected View wrapLayout(BasePresenter presenter, View root)
     {

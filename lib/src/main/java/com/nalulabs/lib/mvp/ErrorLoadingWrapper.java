@@ -1,6 +1,7 @@
 package com.nalulabs.lib.mvp;
 
 import android.databinding.Observable;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -18,8 +19,13 @@ public class ErrorLoadingWrapper {
 
 
     public View wrapLayout(final BasePresenter presenter, final View root, ViewGroup wrapperRoot) {
-        this.presenter = presenter;
         final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        return wrapLayout(presenter, root, wrapperRoot, params);
+    }
+
+    @NonNull
+    public View wrapLayout(final BasePresenter presenter, final View root, ViewGroup wrapperRoot, FrameLayout.LayoutParams params) {
+        this.presenter = presenter;
         wrapperRoot.addView(root, params);
 
         loadingCallback = new Observable.OnPropertyChangedCallback() {
