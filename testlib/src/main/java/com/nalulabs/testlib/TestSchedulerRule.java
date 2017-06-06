@@ -11,13 +11,20 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.schedulers.TestScheduler;
 
-public class TrampolineSchedulerRule extends TestWatcher {
+public class TestSchedulerRule extends TestWatcher {
 
-    private static final Function<Scheduler, Scheduler> TRAMPOLINE_FUNCTION = new Function<Scheduler, Scheduler>() {
+    private final TestScheduler testScheduler = new TestScheduler();
+
+    public TestScheduler getTestScheduler() {
+        return testScheduler;
+    }
+
+    private final Function<Scheduler, Scheduler> TEST_SCHEDULER_FUNCTION = new Function<Scheduler, Scheduler>() {
         @Override
         public Scheduler apply(@NonNull Scheduler scheduler) throws Exception {
-            return Schedulers.trampoline();
+            return testScheduler;
         }
     };
 
@@ -29,9 +36,9 @@ public class TrampolineSchedulerRule extends TestWatcher {
     };
 
     @Override protected void starting(Description description) {
-        RxJavaPlugins.setIoSchedulerHandler(TRAMPOLINE_FUNCTION);
-        RxJavaPlugins.setComputationSchedulerHandler(TRAMPOLINE_FUNCTION);
-        RxJavaPlugins.setNewThreadSchedulerHandler(TRAMPOLINE_FUNCTION);
+        RxJavaPlugins.setIoSchedulerHandler(TEST_SCHEDULER_FUNCTION);
+        RxJavaPlugins.setComputationSchedulerHandler(TEST_SCHEDULER_FUNCTION);
+        RxJavaPlugins.setNewThreadSchedulerHandler(TEST_SCHEDULER_FUNCTION);
         RxAndroidPlugins.setInitMainThreadSchedulerHandler(TRAMPOLINE_CALLABLE_FUNCTION);
     }
 
