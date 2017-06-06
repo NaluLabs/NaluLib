@@ -142,7 +142,7 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
     }
 
     @Override
-    public void onCreate(@NonNull V view, @Nullable Bundle savedInstanceState, @NonNull Intent intent, @NonNull Bundle arguments) {
+    public void onCreate(@NonNull V view, @Nullable Bundle savedInstanceState, @NonNull Intent intent, @Nullable Bundle arguments) {
         if (model == null) {
             if (savedInstanceState == null) {
                 model = createModel(arguments);
