@@ -5,6 +5,8 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.nalulabs.lib.R;
 import com.nalulabs.lib.logs.LogUtils;
@@ -140,7 +142,7 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
     }
 
     @Override
-    public void onCreate(V view, Bundle savedInstanceState, Intent intent, Bundle arguments) {
+    public void onCreate(@NonNull V view, @Nullable Bundle savedInstanceState, @NonNull Intent intent, @NonNull Bundle arguments) {
         if (model == null) {
             if (savedInstanceState == null) {
                 model = createModel(arguments);
@@ -155,5 +157,29 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
         bundle.putParcelable(MODEL, Parcels.wrap(model));
     }
 
-    protected abstract M createModel(Bundle arguments);
+    protected abstract M createModel(@Nullable Bundle arguments);
+
+    @Override public void onPause(@NonNull V view) {
+        super.onPause(view);
+    }
+
+    @Override public void onStart(@NonNull V view) {
+        super.onStart(view);
+    }
+
+    @Override public void onResume(@NonNull V view) {
+        super.onResume(view);
+    }
+
+    @Override public void onStop(@NonNull V view) {
+        super.onStop(view);
+    }
+
+    @Override public void onDestroy(@NonNull V view, boolean changingConfigurations) {
+        super.onDestroy(view, changingConfigurations);
+    }
+
+    @Override public void onDestroyView(@NonNull V view) {
+        super.onDestroyView(view);
+    }
 }
