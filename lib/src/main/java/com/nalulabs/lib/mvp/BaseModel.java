@@ -13,7 +13,7 @@ public class BaseModel
     public ObservableBoolean error = new ObservableBoolean();
     public ObservableBoolean confirm = new ObservableBoolean();
 
-    public Class<? extends Throwable> lastError;
+    public Class lastError;
 
     public ObservableField<String> errorMessage = new ObservableField<>();
     public ObservableField<String> confirmMessage = new ObservableField<>();
