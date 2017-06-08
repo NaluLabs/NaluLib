@@ -11,8 +11,6 @@ import android.support.annotation.Nullable;
 import com.nalulabs.lib.R;
 import com.nalulabs.lib.logs.LogUtils;
 
-import org.parceler.Parcels;
-
 import it.codingjam.lifecyclebinder.DefaultLifeCycleAware;
 import timber.log.Timber;
 
@@ -147,15 +145,19 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
             if (savedInstanceState == null) {
                 model = createModel(arguments);
             } else {
-                model = Parcels.unwrap(savedInstanceState.getParcelable(MODEL));
+                model = loadModelFromBundle(savedInstanceState, MODEL);
             }
         }
     }
 
     @Override
     public void onSaveInstanceState(V view, Bundle bundle) {
-        bundle.putParcelable(MODEL, Parcels.wrap(model));
+        saveModelToBundle(bundle, MODEL);
     }
+
+    protected abstract M loadModelFromBundle(@NonNull Bundle savedInstanceState, @NonNull String key);
+
+    protected abstract void saveModelToBundle(@NonNull Bundle bundle, @NonNull String key);
 
     protected abstract M createModel(@Nullable Bundle arguments);
 

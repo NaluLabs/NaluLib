@@ -1,9 +1,12 @@
 package com.nalulabs.nalulib.example;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.nalulabs.lib.mvp.BaseActivityPresenter;
 import com.nalulabs.nalulib.R;
+
+import org.parceler.Parcels;
 
 import java.util.Arrays;
 
@@ -48,4 +51,13 @@ public class ExamplePresenter extends BaseActivityPresenter<ExampleModel, Exampl
         model.items = Arrays.asList(new Item1("A"), new Item2("B"), new Item1("C"), new Item1("C"), new Item1("D")
                 , new Item1("E"), new Item1("F"), new Item1("G"), new Item1("H"), new Item2("I"));
     }
+
+    protected ExampleModel loadModelFromBundle(@NonNull Bundle savedInstanceState, @NonNull String key) {
+        return Parcels.unwrap(savedInstanceState.getParcelable(key));
+    }
+
+    protected void saveModelToBundle(@NonNull Bundle bundle,@NonNull String key) {
+        bundle.putParcelable(key, Parcels.wrap(model));
+    }
+
 }
