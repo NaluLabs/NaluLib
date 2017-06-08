@@ -63,7 +63,7 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
     public void showError(Throwable t) {
         loading.set(false);
         model.error.set(true);
-        model.lastError = t.getClass();
+        model.lastError = (Class<Throwable>) t.getClass();
         model.errorMessage.set(getErrorMessage(t));
         model.retryButtonMessage.set(getRetryButtonMessage(t));
         if (LogUtils.isExceptionToBeLogged(t)) {
