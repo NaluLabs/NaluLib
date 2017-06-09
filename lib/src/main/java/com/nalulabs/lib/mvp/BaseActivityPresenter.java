@@ -20,8 +20,8 @@ public abstract class BaseActivityPresenter<M extends BaseModel, A extends BaseA
 
     @Override
     public void onCreate(@NonNull A view, @Nullable Bundle savedInstanceState, @NonNull Intent intent, @Nullable Bundle arguments) {
-        super.onCreate(view, savedInstanceState, intent, arguments);
         this.activity = view;
+        super.onCreate(view, savedInstanceState, intent, arguments);
     }
 
     @Override

@@ -16,8 +16,8 @@ public abstract class BaseFragmentPresenter<M extends BaseModel, F extends BaseF
     @Override
     public void onCreate(@NonNull F view, @Nullable Bundle savedInstanceState, @NonNull Intent intent, @Nullable Bundle arguments)
     {
-        super.onCreate(view, savedInstanceState, intent, arguments);
         this.fragment = view;
+        super.onCreate(view, savedInstanceState, intent, arguments);
     }
 
     @Override
