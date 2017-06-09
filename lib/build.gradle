@@ -29,9 +29,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.4.0'
 
-    compile 'com.google.firebase:firebase-crash:10.2.6'
+    compile 'com.google.firebase:firebase-crash:11.0.0'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -41,7 +41,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     annotationProcessor 'com.github.fabioCollini.lifecyclebinder:lifecyclebinder-processor:0.4beta1'
     compile 'com.github.fabioCollini.lifecyclebinder:lifecyclebinder-lib:0.4beta1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.4.0'
     compile ('com.nytimes.android:store2:0.0.1-SNAPSHOT') {
         exclude group: 'com.google.code.findbugs'
     }
