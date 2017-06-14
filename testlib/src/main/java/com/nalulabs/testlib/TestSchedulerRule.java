@@ -4,6 +4,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Scheduler;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -45,5 +46,17 @@ public class TestSchedulerRule extends TestWatcher {
     @Override protected void finished(Description description) {
         RxJavaPlugins.reset();
         RxAndroidPlugins.reset();
+    }
+
+    public void advanceTimeBy(long delayTime, TimeUnit unit) {
+        testScheduler.advanceTimeBy(delayTime, unit);
+    }
+
+    public void advanceTimeTo(long delayTime, TimeUnit unit) {
+        testScheduler.advanceTimeTo(delayTime, unit);
+    }
+
+    public void triggerActions() {
+        testScheduler.triggerActions();
     }
 }
