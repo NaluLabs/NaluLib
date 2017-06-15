@@ -18,7 +18,7 @@ import timber.log.Timber;
  * Created by fabio on 27/03/17.
  */
 
-public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeCycleAware<V> {
+public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeCycleAware<V> implements ErrorLoadingData {
     private static final String MODEL = "model";
     protected M model;
 
@@ -34,6 +34,10 @@ public abstract class BasePresenter<M extends BaseModel, V> extends DefaultLifeC
 
     public ObservableBoolean getConfirm() {
         return model.confirm;
+    }
+
+    @Override public ObservableBoolean getLoading() {
+        return loading;
     }
 
     public ObservableInt getConfirmRequestCode() {

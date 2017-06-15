@@ -15,7 +15,7 @@ public class ErrorLoadingWrapper {
     private Observable.OnPropertyChangedCallback loadingCallback;
     private Observable.OnPropertyChangedCallback errorCallback;
     private Observable.OnPropertyChangedCallback confirmCallback;
-    private BasePresenter presenter;
+    private ErrorLoadingData presenter;
 
 
     public View wrapLayout(final BasePresenter presenter, final View root, ViewGroup wrapperRoot) {
@@ -24,17 +24,17 @@ public class ErrorLoadingWrapper {
     }
 
     @NonNull
-    public View wrapLayout(final BasePresenter presenter, final View root, ViewGroup wrapperRoot, FrameLayout.LayoutParams params) {
+    public View wrapLayout(final ErrorLoadingData presenter, final View root, ViewGroup wrapperRoot, FrameLayout.LayoutParams params) {
         this.presenter = presenter;
         wrapperRoot.addView(root, params);
 
         loadingCallback = new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
-                root.setVisibility(presenter.loading.get() ? View.GONE : View.VISIBLE);
+                root.setVisibility(presenter.getLoading().get() ? View.GONE : View.VISIBLE);
             }
         };
-        presenter.loading.addOnPropertyChangedCallback(loadingCallback);
+        presenter.getLoading().addOnPropertyChangedCallback(loadingCallback);
 
         errorCallback = new Observable.OnPropertyChangedCallback() {
             @Override
@@ -52,13 +52,13 @@ public class ErrorLoadingWrapper {
         };
         presenter.getConfirm().addOnPropertyChangedCallback(confirmCallback);
 
-        root.setVisibility(presenter.loading.get() || presenter.getError().get() || presenter.getConfirm().get() ? View.GONE : View.VISIBLE);
+        root.setVisibility(presenter.getLoading().get() || presenter.getError().get() || presenter.getConfirm().get() ? View.GONE : View.VISIBLE);
 
         return wrapperRoot;
     }
 
     public void removeCallbacks() {
-        presenter.loading.removeOnPropertyChangedCallback(loadingCallback);
+        presenter.getLoading().removeOnPropertyChangedCallback(loadingCallback);
         presenter.getError().removeOnPropertyChangedCallback(errorCallback);
         presenter.getConfirm().removeOnPropertyChangedCallback(confirmCallback);
     }
