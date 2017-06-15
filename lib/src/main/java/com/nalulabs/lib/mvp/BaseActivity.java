@@ -20,14 +20,14 @@ public abstract class BaseActivity extends AppCompatActivity
 
     protected ErrorLoadingWrapper errorLoadingWrapper;
 
-    protected View wrapLayout(BasePresenter presenter, View root)
+    protected View wrapLayout(ErrorLoadingData presenter, View root)
     {
         errorLoadingWrapper = new ErrorLoadingWrapper();
         ViewGroup wrapperRoot = createErrorLoadingWrapper(presenter);
         return errorLoadingWrapper.wrapLayout(presenter, root, wrapperRoot);
     }
 
-    protected abstract ViewGroup createErrorLoadingWrapper(BasePresenter presenter);
+    protected abstract ViewGroup createErrorLoadingWrapper(ErrorLoadingData presenter);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)

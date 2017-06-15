@@ -6,7 +6,7 @@
 
         <variable
             name="presenter"
-            type="com.nalulabs.lib.mvp.BasePresenter"/>
+            type="com.nalulabs.lib.mvp.ErrorLoadingData"/>
     </data>
 
     <FrameLayout

@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.nalulabs.lib.mvp.BaseActivity;
-import com.nalulabs.lib.mvp.BasePresenter;
+import com.nalulabs.lib.mvp.ErrorLoadingData;
 import com.nalulabs.lib.recycle.BaseAdapter;
 import com.nalulabs.lib.recycle.BaseHeader;
 import com.nalulabs.lib.recycle.HeaderAdapter;
@@ -32,7 +32,7 @@ public class ExampleActivity extends BaseActivity {
     ExamplePresenter presenter;
 
     @Override
-    protected ViewGroup createErrorLoadingWrapper(BasePresenter basePresenter) {
+    protected ViewGroup createErrorLoadingWrapper(ErrorLoadingData basePresenter) {
         ErrorLoadingWrapperBinding wrapper = ErrorLoadingWrapperBinding.inflate(LayoutInflater.from(this));
         wrapper.setPresenter(basePresenter);
         wrapper.executePendingBindings();

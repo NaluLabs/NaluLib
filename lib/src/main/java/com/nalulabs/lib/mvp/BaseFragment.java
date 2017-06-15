@@ -19,14 +19,14 @@ public abstract class BaseFragment extends Fragment
 {
     private ErrorLoadingWrapper errorLoadingWrapper;
 
-    protected View wrapLayout(BasePresenter presenter, View root)
+    protected View wrapLayout(ErrorLoadingData presenter, View root)
     {
         errorLoadingWrapper = new ErrorLoadingWrapper();
         ViewGroup wrapperLayout = createErrorLoadingWrapper(presenter);
         return errorLoadingWrapper.wrapLayout(presenter, root, wrapperLayout);
     }
 
-    protected abstract ViewGroup createErrorLoadingWrapper(BasePresenter presenter);
+    protected abstract ViewGroup createErrorLoadingWrapper(ErrorLoadingData presenter);
 
     @Nullable
     @Override

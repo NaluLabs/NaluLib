@@ -18,7 +18,7 @@ public class ErrorLoadingWrapper {
     private ErrorLoadingData presenter;
 
 
-    public View wrapLayout(final BasePresenter presenter, final View root, ViewGroup wrapperRoot) {
+    public View wrapLayout(final ErrorLoadingData presenter, final View root, ViewGroup wrapperRoot) {
         final FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         return wrapLayout(presenter, root, wrapperRoot, params);
     }
