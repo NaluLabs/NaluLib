@@ -19,4 +19,6 @@ public interface ErrorLoadingData {
     ObservableField<String> getConfirmMessage();
 
     ObservableField<String> getConfirmButtonMessage();
+
+    ObservableField<String> getRetryButtonMessage();
 }
