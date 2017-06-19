@@ -6,6 +6,7 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import io.reactivex.exceptions.CompositeException;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -38,7 +39,7 @@ public class LogUtils
     public static boolean isConnectionError(Throwable t)
     {
         if (t instanceof UnknownHostException || t instanceof SocketException || t instanceof SocketTimeoutException
-                || t instanceof HttpException)
+                || t instanceof HttpException || t instanceof TimeoutException)
         {
             return true;
         }
